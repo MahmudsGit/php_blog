@@ -20,7 +20,7 @@
 
 
         if (empty($error)){
-            $emailCheck = mysqli_query($conn, "SELECT `email`,`password`,`status`,`name` FROM `users` WHERE `email` = '$userEmail'");
+            $emailCheck = mysqli_query($conn, "SELECT `id`,`email`,`password`,`status`,`name` FROM `users` WHERE `email` = '$userEmail'");
 
             if (mysqli_num_rows($emailCheck) == 1 ) {
                 $userInfo = mysqli_fetch_assoc($emailCheck);
@@ -28,6 +28,7 @@
                     if ($userInfo['status'] == 1){
 
                         $_SESSION['userName'] = $userInfo['name'];
+                        $_SESSION['userId'] = $userInfo['id'];
                         $_SESSION['userEmail'] = $userInfo['email'];
 
                         header('location: index.php');

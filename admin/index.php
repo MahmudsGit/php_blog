@@ -1,8 +1,11 @@
 <?php
+    ob_start();
     require_once "../config/dbcon.php";
+    require_once "../config/backEnd.php";
     if (!isset($_SESSION['userEmail'])){
         header('location: login.php');
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -15,7 +18,15 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Admin</title>
+    <title>
+    <?php
+        if (isset($_GET['page'])){
+            echo $_GET['page'];
+        }else{
+            echo "Admin";
+        }
+    ?>
+    </title>
 
     <!-- Custom fonts for this template-->
     <link href="assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -25,6 +36,8 @@
 
     <!-- Custom styles for this template-->
     <link href="assets/css/sb-admin-2.min.css" rel="stylesheet">
+    <!-- Custom styles for this page -->
+    <link href="assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
 </head>
 
@@ -48,8 +61,8 @@
         <hr class="sidebar-divider my-0">
 
         <!-- Nav Item - Dashboard -->
-        <li class="nav-item">
-            <a class="nav-link" href="index.php">
+        <li class="nav-item <?php if($_GET['page'] == 'dashboard'){echo "active" ;} ?>">
+            <a class="nav-link" href="index.php?page=dashboard">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
                 <span>Dashboard</span></a>
         </li>
@@ -57,18 +70,33 @@
         <!-- Divider -->
         <hr class="sidebar-divider">
         <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+        <li class="nav-item <?php if($_GET['page'] == 'add_catagory' or $_GET['page'] == 'manage_catagory'){echo "active" ;} ?>">
+            <a class="nav-link collapsed" href="?page=add_catagory" data-toggle="collapse" data-target="#collapseTwo"
                aria-expanded="true" aria-controls="collapseTwo">
-                <i class="fas fa-fw fa-cog"></i>
+                <i class="fas fa-fw fa-list"></i>
                 <span>Catagories</span>
             </a>
-            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div id="collapseTwo" class="collapse <?php if($_GET['page'] == 'add_catagory' or $_GET['page'] == 'manage_catagory'){echo "show" ;} ?>" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" href="buttons.html">Add Catagories</a>
-                    <a class="collapse-item" href="cards.html">Manage Catagories</a>
+                    <a class="collapse-item <?php if($_GET['page'] == 'add_catagory'){echo "active" ;} ?>" href="?page=add_catagory">Add Catagories</a>
+                    <a class="collapse-item <?php if($_GET['page'] == 'manage_catagory'){echo "active" ;} ?>" href="?page=manage_catagory">Manage Catagories</a>
                 </div>
             </div>
+            
+        </li>
+        <li class="nav-item <?php if($_GET['page'] == 'add_post' or $_GET['page'] == 'manage_post'){echo "active" ;} ?>">
+            <a class="nav-link collapsed" href="?page=add_post" data-toggle="collapse" data-target="#collapseThree"
+               aria-expanded="true" aria-controls="collapseThree">
+                <i class="fas fa-fw fa-list"></i>
+                <span>posts</span>
+            </a>
+            <div id="collapseThree" class="collapse <?php if($_GET['page'] == 'add_post' or $_GET['page'] == 'manage_post'){echo "show" ;} ?>" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item <?php if($_GET['page'] == 'add_post'){echo "active" ;} ?>" href="?page=add_post">Add posts</a>
+                    <a class="collapse-item <?php if($_GET['page'] == 'manage_post'){echo "active" ;} ?>" href="?page=manage_post">Manage posts</a>
+                </div>
+            </div>
+
         </li>
         <!-- Sidebar Toggler (Sidebar) -->
         <div class="text-center d-none d-md-inline">
@@ -128,8 +156,17 @@
             <!-- Begin Page Content -->
             <div class="container-fluid">
 
-                <!-- Page Heading -->
-                <h1 class="h3 mb-4 text-gray-800">Dashboard</h1>
+                <?php
+
+
+                if (isset($_GET['page'])){
+                    $page = $_GET['page'];
+                    require_once $page.'.php';
+                }
+                if (!isset($_GET['page'])){
+                    require_once 'dashboard.php';
+                }
+                ?>
 
             </div>
             <!-- /.container-fluid -->
@@ -141,7 +178,7 @@
         <footer class="sticky-footer bg-white">
             <div class="container my-auto">
                 <div class="copyright text-center my-auto">
-                    <span>Copyright &copy; Your Website 2020</span>
+                    <span>Copyright &copy; Simple Blog 2021</span>
                 </div>
             </div>
         </footer>
@@ -184,9 +221,13 @@
 
 <!-- Core plugin JavaScript-->
 <script src="assets/vendor/jquery-easing/jquery.easing.min.js"></script>
-
+<!-- Page level plugins -->
+<script src="assets/vendor/datatables/jquery.dataTables.min.js"></script>
+<script src="assets/vendor/datatables/dataTables.bootstrap4.min.js"></script>
 <!-- Custom scripts for all pages-->
 <script src="assets/js/sb-admin-2.min.js"></script>
+<script src="assets/js/script.js"></script>
+
 
 </body>
 
