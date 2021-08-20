@@ -42,11 +42,11 @@
                         <label for="catagory_status" class="form-label">Status:</label>
                         <div>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="catagory_status" id="catagory_status" value="1">
+                                <input class="form-check-input" type="radio" name="catagory_status" id="catagory_status" value="1" required>
                                 <label class="form-check-label" for="catagory_status">Active</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="catagory_status" id="catagory_status" value="0">
+                                <input class="form-check-input" type="radio" name="catagory_status" id="catagory_status" value="0" required>
                                 <label class="form-check-label" for="catagory_status">Inactive</label>
                             </div>
                         </div>

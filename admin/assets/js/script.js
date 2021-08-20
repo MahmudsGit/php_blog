@@ -4,3 +4,5 @@ function string_to_slug(text) {
 $(document).ready(function() {
     $('#dataTable').DataTable();
 });
+
+CKEDITOR.replace( 'post_content' );
