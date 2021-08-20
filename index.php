@@ -2,7 +2,6 @@
             require_once "header.php" ;
             require_once "config/dbcon.php" ;
             $posts = mysqli_query($conn, "SELECT `posts`.*, `users`.`name`, `categories`.`name` AS cat_name FROM `posts` INNER JOIN `users` ON `posts`.`user_id` =`users`.`id` INNER JOIN `categories` ON `posts`.`cat_id` = `categories`.`id` WHERE `posts`.`status`= 1 ORDER BY `posts`.`id`");
-
         ?>
         <!-- Page content-->
         <div class="container">
@@ -39,7 +38,6 @@
                         <h1 class="">Releted Post Title</h1><hr class="my-0" />
                         <div class="col-lg-6">
                             <!-- Blog post-->
-
                             <div class="card mb-4">
                                 <a href="#!"><img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..." /></a>
                                 <div class="card-body">
@@ -49,10 +47,8 @@
                                     <a class="btn btn-primary" href="#!">Read more →</a>
                                 </div>
                             </div>
-
                         </div>
                         <div class="col-lg-6">
-
                             <!-- Blog post-->
                             <div class="card mb-4">
                                 <a href="#!"><img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..." /></a>
@@ -63,7 +59,6 @@
                                     <a class="btn btn-primary" href="#!">Read more →</a>
                                 </div>
                             </div>
-
                         </div>
                     </div>
 

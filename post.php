@@ -5,8 +5,6 @@ if (isset($_GET['post'])){
     $viewposts = mysqli_query($conn, "SELECT `posts`.*, `users`.`name`, `categories`.`name` AS cat_name FROM `posts` INNER JOIN `users` ON `posts`.`user_id` =`users`.`id` INNER JOIN `categories` ON `posts`.`cat_id` = `categories`.`id` WHERE `posts`.`id` = $id AND `posts`.`status` = 1");
     $postview = mysqli_fetch_assoc($viewposts);
 }
-
-
 ?>
 <!-- Page content-->
 <div class="container mt-5">

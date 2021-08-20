@@ -1,7 +1,5 @@
 <?php
-
     $viewCategories = mysqli_query($conn, "SELECT * FROM `categories` WHERE `status`= 1");
-
 ?>
 <div class="col-lg-4">
     <!-- Search widget-->
