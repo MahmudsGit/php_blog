@@ -19,7 +19,7 @@ if (isset($_GET['post'])){
                     <!-- Post meta content-->
                     <div class="text-muted fst-italic mb-2">Posted on <?php echo date('M d, Y', strtotime($postview['created_at']) ) ; ?> || By <strong> <?php echo $postview['name'] ; ?></strong></div>
                     <!-- Post categories-->
-                    <a class="badge bg-secondary text-decoration-none link-light" href="#!"><?php echo $postview['cat_name'] ; ?></a>
+                    <a class="badge bg-secondary text-decoration-none link-light" href="category.php?category=<?php echo $postview['cat_id'] ; ?>"><?php echo $postview['cat_name'] ; ?></a>
                 </header>
                 <!-- Preview image figure-->
                 <figure class="mb-4"><img class="img-fluid rounded" src="uploads/posts/<?php echo $postview['image'] ; ?>" alt="..." /></figure>
@@ -28,48 +28,29 @@ if (isset($_GET['post'])){
                     <?php echo $postview['content']; ?>
                 </section>
             </article>
-            <!-- Comments section-->
-            <section class="mb-5">
-                <div class="card bg-light">
-                    <div class="card-body">
-                        <!-- Comment form-->
-                        <form class="mb-4"><textarea class="form-control" rows="3" placeholder="Join the discussion and leave a comment!"></textarea></form>
-                        <!-- Comment with nested comments-->
-                        <div class="d-flex mb-4">
-                            <!-- Parent comment-->
-                            <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
-                            <div class="ms-3">
-                                <div class="fw-bold">Commenter Name</div>
-                                If you're going to lead a space frontier, it has to be government; it'll never be private enterprise. Because the space frontier is dangerous, and it's expensive, and it has unquantified risks.
-                                <!-- Child comment 1-->
-                                <div class="d-flex mt-4">
-                                    <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
-                                    <div class="ms-3">
-                                        <div class="fw-bold">Commenter Name</div>
-                                        And under those conditions, you cannot establish a capital-market evaluation of that enterprise. You can't get investors.
-                                    </div>
-                                </div>
-                                <!-- Child comment 2-->
-                                <div class="d-flex mt-4">
-                                    <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
-                                    <div class="ms-3">
-                                        <div class="fw-bold">Commenter Name</div>
-                                        When you put money directly to a problem, it makes a good headline.
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Single comment-->
-                        <div class="d-flex">
-                            <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
-                            <div class="ms-3">
-                                <div class="fw-bold">Commenter Name</div>
-                                When I look at the universe and all the ways the universe wants to kill us, I find it hard to reconcile that with statements of beneficence.
+            <!-- Nested row for non-featured blog posts-->
+            <div class="row">
+                <h2 class="">Releted Post From <?php echo $postview['cat_name']; ?></h2><hr class="my-0" /><br>
+
+                <?php
+                $catId = $postview['cat_id'];
+                $catagories = mysqli_query($conn, "SELECT `posts`.*, `users`.`name`, `categories`.`name` AS cat_name FROM `posts` INNER JOIN `users` ON `posts`.`user_id` =`users`.`id` INNER JOIN `categories` ON `posts`.`cat_id` = `categories`.`id` WHERE `posts`.`status`= 1 AND `posts`.`cat_id` = $catId ");
+                foreach ($catagories as $catagory):  ?>
+                    <div class="col-lg-6">
+                        <!-- Blog post-->
+                        <div class="card mb-4">
+                            <a href="#!"><img width="300px" height="150px" class="card-img-top" src="uploads/posts/<?php echo $catagory['image'] ; ?>" alt="<?php $catagory['image'] ; ?>" alt="..." /></a>
+                            <div class="card-body">
+                                <div class="small text-muted"><?php echo date('M d, Y', strtotime($catagory['created_at']) ) ; ?> || <i>Category: </i><?php echo $catagory['cat_name'] ; ?></div>
+                                <h2 class="card-title h4"><?php echo $catagory['title']; ?></h2>
+                                <p class="card-text"><?php echo substr($catagory['content'],0,150) ?> ...</p>
+                                <a class="btn btn-primary" href="post.php?post=<?php echo $catagory['id']; ?>">Read more →</a>
                             </div>
                         </div>
                     </div>
-                </div>
-            </section>
+                <?php endforeach; ?>
+
+            </div>
         </div>
         <!-- Side widgets-->
         <?php require_once "sidebar.php" ; ?>

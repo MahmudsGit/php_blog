@@ -1,7 +1,22 @@
         <?php
             require_once "header.php" ;
-            require_once "config/dbcon.php" ;
-            $posts = mysqli_query($conn, "SELECT `posts`.*, `users`.`name`, `categories`.`name` AS cat_name FROM `posts` INNER JOIN `users` ON `posts`.`user_id` =`users`.`id` INNER JOIN `categories` ON `posts`.`cat_id` = `categories`.`id` WHERE `posts`.`status`= 1 ORDER BY `posts`.`id`");
+
+                $page = 1;
+                $per_page = 5;
+                $totalPost = mysqli_query($conn, "SELECT * FROM `posts` WHERE `status`=1");
+                $total_post_data = mysqli_num_rows($totalPost);
+                $total_page = ceil($total_post_data/$per_page);
+
+                if (isset($_GET['page'])){
+                    $pageNo = $_GET['page'];
+                }else{
+                    $pageNo = 1;
+                }
+
+                $limit = ($pageNo-1)*5;
+
+            $posts = mysqli_query($conn, "SELECT `posts`.*, `users`.`name`, `categories`.`name` AS cat_name FROM `posts` INNER JOIN `users` ON `posts`.`user_id` =`users`.`id` INNER JOIN `categories` ON `posts`.`cat_id` = `categories`.`id` WHERE `posts`.`status`= 1 ORDER BY `posts`.`id` LIMIT $limit,$per_page");
+
         ?>
         <!-- Page content-->
         <div class="container">
@@ -24,44 +39,15 @@
                     <nav aria-label="Pagination">
                         <hr class="my-0" />
                         <ul class="pagination justify-content-center my-4">
-                            <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1" aria-disabled="true">Newer</a></li>
-                            <li class="page-item active" aria-current="page"><a class="page-link" href="#!">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#!">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#!">3</a></li>
-                            <li class="page-item disabled"><a class="page-link" href="#!">...</a></li>
-                            <li class="page-item"><a class="page-link" href="#!">15</a></li>
-                            <li class="page-item"><a class="page-link" href="#!">Older</a></li>
+                            <li class="page-item "><a class="page-link" href="?page=<?php echo $page ?>" tabindex="-1" aria-disabled="true">Newer</a></li>
+                            <?php
+                            for ($page=1; $page <= $total_page; $page++) {
+                            ?>
+                            <li class="page-item" aria-current="page"><a class="page-link" href="?page=<?php echo $page ?>"><?php echo $page ?></a></li>
+                            <?php } ?>
+                            <li class="page-item"><a class="page-link" href="?page=<?php echo $page ?>">Older</a></li>
                         </ul>
                     </nav>
-                    <!-- Nested row for non-featured blog posts-->
-                    <div class="row">
-                        <h1 class="">Releted Post Title</h1><hr class="my-0" />
-                        <div class="col-lg-6">
-                            <!-- Blog post-->
-                            <div class="card mb-4">
-                                <a href="#!"><img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..." /></a>
-                                <div class="card-body">
-                                    <div class="small text-muted">January 1, 2021</div>
-                                    <h2 class="card-title h4">Post Title</h2>
-                                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis aliquid atque, nulla.</p>
-                                    <a class="btn btn-primary" href="#!">Read more →</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <!-- Blog post-->
-                            <div class="card mb-4">
-                                <a href="#!"><img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..." /></a>
-                                <div class="card-body">
-                                    <div class="small text-muted">January 1, 2021</div>
-                                    <h2 class="card-title h4">Post Title</h2>
-                                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis aliquid atque, nulla.</p>
-                                    <a class="btn btn-primary" href="#!">Read more →</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
                 <!-- Side widgets-->
                 <?php require_once "sidebar.php" ; ?>
